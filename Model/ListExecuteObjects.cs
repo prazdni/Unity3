@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Object = UnityEngine.Object;
+using Random = UnityEngine.Random;
 
 namespace MyLabyrinth
 {
@@ -33,8 +34,32 @@ namespace MyLabyrinth
 
         public ListExecuteObjects()
         {
+            var bonuses = Object.FindObjectsOfType<Bonus>();
+            for (int i = 0; i < bonuses.Length; i++)
+            {
+                var randBonusType = Random.Range(0, 3);
+                var randBuffType = Random.Range(1, 5);
+                
+                switch (randBonusType)
+                {
+                    case 0:
+                        bonuses[i].gameObject.AddComponent<BadBonus>();
+                        bonuses[i].gameObject.GetComponent<BadBonus>().Point = -randBuffType;
+                        break;
+                    case 1:
+                        bonuses[i].gameObject.AddComponent<GoodBonus>();
+                        bonuses[i].gameObject.GetComponent<GoodBonus>().Point = randBuffType;
+                        break;
+                    case 2:
+                        bonuses[i].gameObject.AddComponent<SpeedBonus>();
+                        bonuses[i].gameObject.GetComponent<SpeedBonus>().Boost = randBuffType;
+                        break;
+                }
+            }
+            
+            
             var interactiveObjects = Object.FindObjectsOfType<InteractiveExecuteObject>();
-
+            
             for (int i = 0; i < interactiveObjects.Length; i++)
             {
                 if (interactiveObjects[i] is IExecute interactiveObject)

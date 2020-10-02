@@ -9,7 +9,7 @@ namespace MyLabyrinth
     {
         #region Fields
 
-        public event EventHandler<PlayerEventArgs> OnAction;
+        public event EventHandler<PlayerEventArgs> OnEnter;
         
         private RestartButton _restartButton;
         private Collider _collider;
@@ -30,7 +30,7 @@ namespace MyLabyrinth
         {
             print("You won!");
             var displayWin = Object.FindObjectOfType<DisplayWin>();
-            OnAction.Invoke(this, new PlayerEventArgs(Color.cyan, 0.0f));
+            OnEnter.Invoke(this, new PlayerEventArgs(Color.cyan, 0.0f));
             _restartButton.ActivateButton(true);
         }
         

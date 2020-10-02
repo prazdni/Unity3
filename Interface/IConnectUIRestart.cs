@@ -4,6 +4,6 @@ namespace MyLabyrinth
 {
     public interface IConnectUIRestart
     {
-        event EventHandler<PlayerEventArgs> OnAction;
+        event EventHandler<PlayerEventArgs> OnEnter;
     }
 }

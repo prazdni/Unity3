@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using System.Linq;
+using UnityEngine;
 
 namespace MyLabyrinth
 {
@@ -11,7 +13,8 @@ namespace MyLabyrinth
         private GameObject _bonuse;
         private GameObject _endGame;
         private Canvas _canvas;
-
+        private List<InteractiveExecuteObject> _bonusCubes;
+        
         #endregion
 
         #region Properties

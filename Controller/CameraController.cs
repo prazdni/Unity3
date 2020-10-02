@@ -9,10 +9,10 @@ namespace MyLabyrinth
         
         [SerializeField] private float _timer = 1.0f;
 
-        private Transform _player;
-        private Transform _mainCamera;
-        private Vector3 _offset;
-        private Camera _mainCameraCharacteristics;
+        private readonly Transform _player;
+        private readonly Transform _mainCamera;
+        private readonly Vector3 _offset;
+        private readonly Camera _mainCameraCharacteristics;
 
         private float _field;
         private bool _isFieldChanged = false;

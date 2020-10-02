@@ -12,7 +12,6 @@ namespace MyLabyrinth
         
         private CameraController _cameraController;
         private InputController _inputController;
-        private UIController _uiController;
 
         #endregion
 
@@ -24,7 +23,7 @@ namespace MyLabyrinth
             var reference = new Reference();
 
             _interactiveObject = new ListExecuteObjects();
-
+            
             _cameraController = new CameraController(reference.PlayerBall.transform, reference.MainCamera.transform);
             _interactiveObject.AddExecuteObject(_cameraController);
             _interactiveObject.AddExecuteObject(reference.PlayerBall);
@@ -32,7 +31,7 @@ namespace MyLabyrinth
             _inputController = new InputController(reference.PlayerBall);
             _interactiveObject.AddExecuteObject(_inputController);
 
-            _uiController = new UIController(_interactiveObject);
+            var uiController = new UIController(_interactiveObject);
             
             for (int i = 0; i < _interactiveObject.Length; i++)
             {
@@ -61,6 +60,7 @@ namespace MyLabyrinth
                 {
                     if (!interactive.IsInteractable())
                     {
+                        //interactive.gameObject.SetActive(false);
                         Destroy(interactive.gameObject);
                         _interactiveObject.RemoveExecuteObject(i);
                         continue;

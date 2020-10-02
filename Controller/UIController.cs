@@ -11,7 +11,6 @@ namespace MyLabyrinth
         #region Fields
 
         private readonly ListExecuteObjects _executeObjects;
-        private IConnectUIRestart _connectedObject;
 
         #endregion
 
@@ -25,19 +24,21 @@ namespace MyLabyrinth
             {
                 var interactiveObject = _executeObjects[i];
                 
-                if (interactiveObject is HealthBonus healthBonus)
+                switch (interactiveObject)
                 {
-                    healthBonus.HealedOrDamagedPlayer += HealthEffect;
-                }
-
-                if (interactiveObject is KeyBonus keyBonus)
-                {
-                    keyBonus.ShowKey += ShowKey;
+                    case HealthBonus healthBonus:
+                        healthBonus.HealedOrDamagedPlayer += HealthEffect;
+                        break;
+                    case KeyBonus keyBonus:
+                        keyBonus.ShowKey += ShowKey;
+                        break;
+                    default:
+                        break;
                 }
             }
 
-            _connectedObject = Object.FindObjectOfType<ExitDoor>();
-            _connectedObject.OnAction += ShowWin;
+            var connectedObject = Object.FindObjectOfType<ExitDoor>();
+            connectedObject.OnEnter += ShowWin;
         }
 
         #endregion
@@ -74,14 +75,16 @@ namespace MyLabyrinth
             {
                 var interactiveObject = _executeObjects[i];
                 
-                if (interactiveObject is HealthBonus healthBonus)
+                switch (interactiveObject)
                 {
-                    healthBonus.HealedOrDamagedPlayer -= HealthEffect;
-                }
-
-                if (interactiveObject is KeyBonus keyBonus)
-                {
-                    keyBonus.ShowKey -= ShowKey;
+                    case HealthBonus healthBonus:
+                        healthBonus.HealedOrDamagedPlayer -= HealthEffect;
+                        break;
+                    case KeyBonus keyBonus:
+                        keyBonus.ShowKey -= ShowKey;
+                        break;
+                    default:
+                        break;
                 }
             }
         }
