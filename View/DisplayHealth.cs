@@ -8,11 +8,13 @@ namespace MyLabyrinth
     {
         #region Fields
 
-        [SerializeField] private float _playerHP = 10.0f;
-        private float _currentPlayerHP = 1.0f;
+        private RestartButton _restartButton;
         private Text _finishGameLabel;
         private Image _healthBar;
-        private RestartButton _restartButton;
+        
+        [SerializeField] private float _playerHP = 10.0f;
+        private float _currentPlayerHP = 1.0f;
+        
         #endregion
 
 

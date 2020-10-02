@@ -21,8 +21,7 @@ namespace MyLabyrinth
 
         #endregion
 
-
-        #region Methods
+        #region ClassLifeCycles
 
         public CameraController(Transform player, Transform mainCamera)
         {
@@ -34,6 +33,12 @@ namespace MyLabyrinth
             _mainCameraCharacteristics = _mainCamera.gameObject.GetComponent<Camera>();
             _field = _mainCameraCharacteristics.fieldOfView;
         }
+
+        #endregion
+        
+        
+        #region Methods
+        
         public void CameraShake(object o, PlayerEventArgs args)
         {
             //_isCameraShaking = true;
@@ -49,6 +54,9 @@ namespace MyLabyrinth
 
         #endregion
 
+
+        #region IExecute
+        
         public void Execute()
         {
             _mainCamera.position = _player.position + _offset;
@@ -73,6 +81,9 @@ namespace MyLabyrinth
                 }
             }
         }
+        
+        #endregion
+        
     }
 }
 

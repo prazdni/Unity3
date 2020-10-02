@@ -7,8 +7,15 @@ namespace MyLabyrinth
 {
     public sealed class RestartButton : MonoBehaviour
     {
+        #region Fields
+
         private Button _button;
         private Text _text;
+
+        #endregion
+
+
+        #region UnityMethods
 
         private void Start()
         {
@@ -23,6 +30,11 @@ namespace MyLabyrinth
             _text.text = String.Empty;
         }
 
+        #endregion
+
+
+        #region Methods
+        
         public void ActivateButton(bool isActive)
         {
             _button.interactable = isActive;
@@ -34,5 +46,7 @@ namespace MyLabyrinth
                 _text.text = "Restart";
             }
         }
+        
+        #endregion
     }
 }

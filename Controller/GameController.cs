@@ -70,8 +70,11 @@ namespace MyLabyrinth
                 interactiveObject.Execute();
             }
         }
+        
+        #endregion
 
 
+        #region IDisposable
 
         public void Dispose()
         {

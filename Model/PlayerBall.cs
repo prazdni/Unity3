@@ -8,14 +8,15 @@ namespace MyLabyrinth
     {
         #region Fields
 
-        private float _timer = 3.0f;
-
         private Rigidbody _rigidbody;
-        private float _speedTimer;
+        
         private float _currentSpeed;
+        private float _timer = 3.0f;
+        private float _speedTimer;
 
         #endregion
 
+        
         #region UnityMethods
 
         private void Start()
@@ -27,6 +28,7 @@ namespace MyLabyrinth
 
         #endregion
 
+        
         #region Methods
 
         public override void Move(float x, float y, float z)
@@ -48,6 +50,9 @@ namespace MyLabyrinth
 
         #endregion
 
+        
+        #region IExecute
+
         public void Execute()
         {
             if (_speedTimer != _timer)
@@ -61,5 +66,7 @@ namespace MyLabyrinth
                 }
             }
         }
+
+        #endregion
     }
 }

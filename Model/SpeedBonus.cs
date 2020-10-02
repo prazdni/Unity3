@@ -8,13 +8,13 @@ namespace MyLabyrinth
     {
         #region Fields
 
-        public int Boost;
         public event EventHandler<PlayerEventArgs> ChangeSpeed =
             delegate(object sender, PlayerEventArgs args) {  };
+        
         private Material _material;
-
+        
         private float _speedRotation;
-        private float _lengthFly;
+        public int Boost;
         
         #endregion
 
@@ -24,7 +24,6 @@ namespace MyLabyrinth
         private void Awake()
         {
             _material = GetComponent<Renderer>().material;
-            _lengthFly = Random.Range(0.5f, 1.0f);
             _speedRotation = Random.Range(10.0f, 50.0f);
         }
 
@@ -41,20 +40,35 @@ namespace MyLabyrinth
             _isInteractable = false;
         }
 
+        #endregion
+        
+        
+        #region IFlick
+
         public void Flick()
         {
             _material.color = new Color(_material.color.r, _material.color.g,
                 _material.color.b, Mathf.PingPong(Time.time, 1.0f));
         }
+
+        #endregion
+
+
+        #region IRotate
+
         public void Rotate()
         {
             
             transform.Rotate(Vector3.up * (Time.deltaTime * _speedRotation), Space.World);
         }
 
+        #endregion
+
+
+        #region IExecute
+
         public override void Execute()
         {
-            
             Flick();
             Rotate();
         }

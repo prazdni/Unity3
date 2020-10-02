@@ -4,11 +4,17 @@ namespace MyLabyrinth
 {
     public class Reference
     {
+        #region Fields
+
         private PlayerBall _playerBall;
         private Camera _mainCamera;
         private GameObject _bonuse;
         private GameObject _endGame;
         private Canvas _canvas;
+
+        #endregion
+
+        #region Properties
 
         public PlayerBall PlayerBall
         {
@@ -37,44 +43,6 @@ namespace MyLabyrinth
             }
         }
 
-        public GameObject EndGame
-        {
-            get
-            {
-                if (_endGame == null)
-                {
-                    var gameObject = Resources.Load<GameObject>("UI/EndGame");
-                    _endGame = Object.Instantiate(gameObject, Canvas.transform);
-                }
-                return _endGame;
-            }
-        }
-
-        public GameObject Bonuse
-        {
-            get
-            {
-                if (_bonuse == null)
-                {
-                    var gameObject = Resources.Load<GameObject>("UI/Bonuse");
-                    _bonuse = Object.Instantiate(gameObject, Canvas.transform);
-                }
-
-                return _bonuse;
-            }
-        }
-
-        public Canvas Canvas
-        {
-            get
-            {
-                if (_canvas == null)
-                {
-                    _canvas = Object.FindObjectOfType<Canvas>();
-                }
-
-                return _canvas;
-            }
-        }
+        #endregion
     }
 }

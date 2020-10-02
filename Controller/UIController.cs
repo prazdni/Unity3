@@ -8,8 +8,15 @@ namespace MyLabyrinth
 {
     public sealed class UIController : IDisposable
     {
+        #region Fields
+
         private readonly ListExecuteObjects _executeObjects;
         private IConnectUIRestart _connectedObject;
+
+        #endregion
+
+        #region ClassLifeCycles
+
         public UIController(ListExecuteObjects executeObjects)
         {
             _executeObjects = executeObjects;
@@ -33,6 +40,11 @@ namespace MyLabyrinth
             _connectedObject.OnAction += ShowWin;
         }
 
+        #endregion
+
+
+        #region Methods
+
         public void HealthEffect(object o, PlayerEventArgs args)
         {
             var displayHealth = Object.FindObjectOfType<DisplayHealth>();
@@ -51,6 +63,11 @@ namespace MyLabyrinth
             displayWin.ShowWin(o, args);
         }
 
+        #endregion
+
+
+        #region IDisposable
+
         public void Dispose()
         {
             for (int i = 0; i < _executeObjects.Length; i++)
@@ -68,5 +85,8 @@ namespace MyLabyrinth
                 }
             }
         }
+
+        #endregion
+        
     }
 }

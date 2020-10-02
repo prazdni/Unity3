@@ -39,6 +39,11 @@ namespace MyLabyrinth
             HealedOrDamagedPlayer.Invoke(this, new PlayerEventArgs(_color, Point));
             _isInteractable = false;
         }
+        
+        #endregion
+
+
+        #region IFlick
 
         public void Flick()
         {
@@ -46,11 +51,22 @@ namespace MyLabyrinth
                 _material.color.b, Mathf.PingPong(Time.time, 1.0f));
         }
 
+        #endregion
+
+
+        #region IFly
+
         public void Fly()
         {
             transform.localPosition = new Vector3(transform.localPosition.x, 
                 Mathf.PingPong(Time.time, _lengthFly), transform.localPosition.z);
         }
+
+        #endregion
+
+
+
+        #region IExecute
 
         public override void Execute()
         {

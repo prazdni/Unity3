@@ -5,12 +5,28 @@ namespace MyLabyrinth
 {
     public sealed class PlayerEventArgs : EventArgs
     {
-        public Color Color { get; }
+        #region Fields
+
         public float PlayerHPChange { get; }
+
+        #endregion
+
+
+        #region Properties
+
+        public Color Color { get; }
+
+        #endregion
+
+
+        #region Methods
+
         public PlayerEventArgs(Color color, float hpChange)
         {
             Color = color;
             PlayerHPChange = hpChange;
         }
+
+        #endregion
     }
 }

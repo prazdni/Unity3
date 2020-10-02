@@ -10,11 +10,16 @@ namespace MyLabyrinth
         #region Fields
 
         protected bool _isInteractable = true;
-        public float Timer { get; } = 0.0f;
-        
         protected Color _color;
         private IExecute _executeImplementation;
         
+        #endregion
+
+
+        #region Properties
+
+        public float Timer { get; } = 0.0f;
+
         #endregion
 
         
@@ -53,7 +58,12 @@ namespace MyLabyrinth
 
         #endregion
 
+        
+        #region IExecute
+
         public abstract void Execute();
+
+        #endregion
     }
 }
 
