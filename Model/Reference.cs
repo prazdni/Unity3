@@ -13,7 +13,7 @@ namespace MyLabyrinth
         private GameObject _bonuse;
         private GameObject _endGame;
         private Canvas _canvas;
-        private List<InteractiveExecuteObject> _bonusCubes;
+        private List<InteractiveBonus> _bonusCubes;
         
         #endregion
 

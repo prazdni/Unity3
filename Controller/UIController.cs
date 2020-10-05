@@ -10,19 +10,19 @@ namespace MyLabyrinth
     {
         #region Fields
 
-        private readonly ListExecuteObjects _executeObjects;
+        private readonly ListExecuteObjectsAndControllers _executeObjectsAndControllers;
 
         #endregion
 
         #region ClassLifeCycles
 
-        public UIController(ListExecuteObjects executeObjects)
+        public UIController(ListExecuteObjectsAndControllers executeObjectsAndControllers)
         {
-            _executeObjects = executeObjects;
+            _executeObjectsAndControllers = executeObjectsAndControllers;
 
-            for (int i = 0; i < _executeObjects.Length; i++)
+            for (int i = 0; i < _executeObjectsAndControllers.Length; i++)
             {
-                var interactiveObject = _executeObjects[i];
+                var interactiveObject = _executeObjectsAndControllers[i];
                 
                 switch (interactiveObject)
                 {
@@ -71,9 +71,9 @@ namespace MyLabyrinth
 
         public void Dispose()
         {
-            for (int i = 0; i < _executeObjects.Length; i++)
+            for (int i = 0; i < _executeObjectsAndControllers.Length; i++)
             {
-                var interactiveObject = _executeObjects[i];
+                var interactiveObject = _executeObjectsAndControllers[i];
                 
                 switch (interactiveObject)
                 {

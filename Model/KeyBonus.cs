@@ -5,7 +5,7 @@ using Random = UnityEngine.Random;
 
 namespace MyLabyrinth
 {
-    class KeyBonus : InteractiveExecuteObject, IFly, IFlick
+    class KeyBonus : InteractiveBonus, IFly, IFlick
     {
         #region Fields
         
@@ -23,6 +23,7 @@ namespace MyLabyrinth
 
         private void Awake()
         {
+            TypeOfBonus = BonusType.KeyBonus;
             _material = GetComponent<Renderer>().material;
             _lengthFly = Random.Range(0.5f, 1.0f);
         }
@@ -37,7 +38,7 @@ namespace MyLabyrinth
             var door = Object.FindObjectOfType<ExitDoor>();
             door.Open(true);
 
-            ShowKey.Invoke(this, new PlayerEventArgs(_color, 0.0f));
+            ShowKey.Invoke(this, new PlayerEventArgs(_color, BonusValue));
             
             _isInteractable = false;
         }

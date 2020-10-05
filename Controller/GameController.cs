@@ -8,7 +8,7 @@ namespace MyLabyrinth
     {
         #region Fields
         
-        private ListExecuteObjects _interactiveObject;
+        private ListExecuteObjectsAndControllers _executeObjectsAndControllers;
         
         private CameraController _cameraController;
         private InputController _inputController;
@@ -20,49 +20,52 @@ namespace MyLabyrinth
 
         private void Awake()
         {
-            var reference = new Reference();
-
-            _interactiveObject = new ListExecuteObjects();
+            _executeObjectsAndControllers = new ListExecuteObjectsAndControllers();
+            _cameraController = _executeObjectsAndControllers.CameraController;
             
-            _cameraController = new CameraController(reference.PlayerBall.transform, reference.MainCamera.transform);
-            _interactiveObject.AddExecuteObject(_cameraController);
-            _interactiveObject.AddExecuteObject(reference.PlayerBall);
+            // var reference = new Reference();
+            //
+            //_inputController = _executeObjects.InputController;
+            // _cameraController = new CameraController(reference.PlayerBall.transform, reference.MainCamera.transform);
+            // _executeObjects.AddExecuteBonus(_cameraController);
+            // _executeObjects.AddExecuteBonus(reference.PlayerBall);
+            //
+            // _inputController = new InputController(reference.PlayerBall);
+            // _executeObjects.AddExecuteBonus(_inputController);
+            //
+            // var uiController = new UIController(_executeObjects);
             
-            _inputController = new InputController(reference.PlayerBall);
-            _interactiveObject.AddExecuteObject(_inputController);
-
-            var uiController = new UIController(_interactiveObject);
-            
-            for (int i = 0; i < _interactiveObject.Length; i++)
+            for (int i = 0; i < _executeObjectsAndControllers.Length; i++)
             {
-                var interactiveObject = _interactiveObject[i];
+                var interactiveObject = _executeObjectsAndControllers[i];
                 
                 if (interactiveObject is BadBonus badBonus)
                 {
                     badBonus.CaughtPlayer +=
-                        _cameraController.CameraShake;
+                        _executeObjectsAndControllers.CameraController.CameraShake;
                 }
 
                 if (interactiveObject is SpeedBonus speedBonus)
                 {
-                    speedBonus.ChangeSpeed += _cameraController.CameraChangeField;
+                    speedBonus.ChangeSpeed += 
+                        _executeObjectsAndControllers.CameraController.CameraChangeField;
                 }
             }
         }
 
         private void Update()
         {
-            for (int i = 0; i < _interactiveObject.Length; i++)
+            for (int i = 0; i < _executeObjectsAndControllers.Length; i++)
             {
-                var interactiveObject = _interactiveObject[i];
+                var interactiveObject = _executeObjectsAndControllers[i];
                 
-                if (interactiveObject is InteractiveExecuteObject interactive)
+                if (interactiveObject is InteractiveBonus interactive)
                 {
                     if (!interactive.IsInteractable())
                     {
                         //interactive.gameObject.SetActive(false);
                         Destroy(interactive.gameObject);
-                        _interactiveObject.RemoveExecuteObject(i);
+                        _executeObjectsAndControllers.RemoveExecuteBonus(i);
                         continue;
                     }
                 }
@@ -78,10 +81,10 @@ namespace MyLabyrinth
 
         public void Dispose()
         {
-            for (int i = 0; i < _interactiveObject.Length; i++)
+            for (int i = 0; i < _executeObjectsAndControllers.Length; i++)
             {
 
-                var interactiveObject = _interactiveObject[i];
+                var interactiveObject = _executeObjectsAndControllers[i];
 
                 if (interactiveObject is BadBonus badBonus)
                 {

@@ -11,8 +11,6 @@ namespace MyLabyrinth
         
         public override event EventHandler<PlayerEventArgs> HealedOrDamagedPlayer = 
             delegate(object sender, PlayerEventArgs args) {  };
-        
-        public int Point;
 
         private Material _material;
 
@@ -25,6 +23,7 @@ namespace MyLabyrinth
 
         private void Awake()
         {
+            TypeOfBonus = BonusType.GoodBonus;
             _material = GetComponent<Renderer>().material;
             _lengthFly = Random.Range(0.5f, 1.0f);
         }
@@ -36,7 +35,7 @@ namespace MyLabyrinth
 
         protected override void Interaction(Collider collider)
         {
-            HealedOrDamagedPlayer.Invoke(this, new PlayerEventArgs(_color, Point));
+            HealedOrDamagedPlayer.Invoke(this, new PlayerEventArgs(_color, BonusValue));
             _isInteractable = false;
         }
         

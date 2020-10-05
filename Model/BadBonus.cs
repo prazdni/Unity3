@@ -16,8 +16,6 @@ namespace MyLabyrinth
         private float _speedRotation;
         private float _lengthFly;
 
-        public int Point;
-
         #endregion
 
 
@@ -25,6 +23,7 @@ namespace MyLabyrinth
 
         private void Awake()
         {
+            TypeOfBonus = BonusType.BadBonus;
             _lengthFly = UnityEngine.Random.Range(0.5f, 1.0f);
             _speedRotation = UnityEngine.Random.Range(10.0f, 50.0f);
         }
@@ -36,8 +35,8 @@ namespace MyLabyrinth
 
         protected override void Interaction(Collider collider)
         {
-            CaughtPlayer.Invoke(this, new PlayerEventArgs(_color, Point));
-            HealedOrDamagedPlayer.Invoke(this, new PlayerEventArgs(_color, Point));
+            CaughtPlayer.Invoke(this, new PlayerEventArgs(_color, BonusValue));
+            HealedOrDamagedPlayer.Invoke(this, new PlayerEventArgs(_color, BonusValue));
             
             collider.gameObject.GetComponent<Rigidbody>().AddExplosionForce(5.0f, 
                 transform.position, 10.0f, 1.0f, ForceMode.Impulse);

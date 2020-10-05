@@ -5,20 +5,28 @@ using Random = UnityEngine.Random;
 
 namespace MyLabyrinth
 {
-    public abstract class InteractiveExecuteObject : InteractiveObject, IExecute
+    public abstract class InteractiveBonus : InteractiveObject, IExecute
     {
         #region Fields
 
+        public int BonusValue = default;
         protected bool _isInteractable = true;
         protected Color _color;
         private IExecute _executeImplementation;
-        
+        private BonusType _typeOfBonus = BonusType.None;
+
         #endregion
 
 
         #region Properties
 
         public float Timer { get; } = 0.0f;
+
+        public BonusType TypeOfBonus
+        {
+            get => _typeOfBonus;
+            protected set => _typeOfBonus = value;
+        }
 
         #endregion
 
@@ -28,6 +36,7 @@ namespace MyLabyrinth
         private void Start()
         {
             _color = Random.ColorHSV();
+            
             if (TryGetComponent(out Renderer renderer))
             {
                 renderer.material.color = _color;

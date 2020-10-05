@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace MyLabyrinth
 {
-    public abstract class HealthBonus : InteractiveExecuteObject
+    public abstract class HealthBonus : InteractiveBonus
     {
         #region Fields
 
