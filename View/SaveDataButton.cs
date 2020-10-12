@@ -1,18 +1,22 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
+using UnityEngine.UI;
 
-public class SaveDataButton : MonoBehaviour
+namespace MyLabyrinth
 {
-    // Start is called before the first frame update
-    void Start()
+    public class SaveDataButton : MonoBehaviour
     {
-        
-    }
+        public UnityAction ButtonAction = () => { };
+        private Button _button;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+        private void Start()
+        {
+            _button = GetComponent<Button>();
+            _button.onClick.AddListener(ButtonAction);
+        }
     }
 }
+

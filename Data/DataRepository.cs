@@ -4,15 +4,15 @@ using UnityEngine;
 
 namespace MyLabyrinth
 {
-    public sealed class SaveDataRepository
+    public sealed class DataRepository
     {
         private readonly IData<SavedData> _data;
         private readonly IData<SavedData[]> _bonusesData;
         private const string _folderName = "dataSave";
-        private const string _fileName = "data1.bat";
+        private const string _fileName = "BonusesData.bat";
         private readonly string _path;
 
-        public SaveDataRepository()
+        public DataRepository()
         {
             _bonusesData = new SerializableXMLData<SavedData[]>();
             _data = new XMLData();
@@ -44,16 +44,12 @@ namespace MyLabyrinth
                 bonusesData[i] = new SavedData
                 {
                     Name = bonuses[i].name, Position = bonuses[i].transform.position,
-                    Rotation = bonuses[i].transform.rotation.eulerAngles, IsEnabled = true
+                    Rotation = bonuses[i].transform.rotation.eulerAngles, IsEnabled = bonuses[i].isActiveAndEnabled
                 };
             }
-            //var tmpData = new SerializableXMLData<SaveBonusesData>();
             
             if (!Directory.Exists(_path))
                 Directory.CreateDirectory(_path);
-            
-            //SaveBonusesData bonusesData = new SaveBonusesData(bonuses);
-
             _bonusesData.Save(bonusesData, Path.Combine(_path, _fileName));
         }
 

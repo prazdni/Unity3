@@ -1,35 +1,34 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace MyLabyrinth
 {
-    public class SavedDataController
+    public class DataController
     {
-        private readonly SaveDataRepository _saveDataRepository;
+        private readonly DataRepository _dataRepository;
 
         private SaveDataButton _savedData;
         private LoadDataButton _loadedData;
         
-        public SavedDataController()
+        public DataController()
         {
-            _saveDataRepository = new SaveDataRepository();
-            Object.FindObjectOfType<SaveDataButton>().ButtonAction += SaveData;
-            Object.FindObjectOfType<LoadDataButton>().ButtonAction += LoadData;
+            _dataRepository = new DataRepository();
+            Object.FindObjectOfType<SaveDataButton>().ButtonAction += SaveBonusesData;
+            Object.FindObjectOfType<LoadDataButton>().ButtonAction += LoadBonusesData;
 
         }
 
-        private void SaveData()
+        private void SaveBonusesData()
         {
-            GameObject[] allSceneObjects;
-            allSceneObjects = Object.FindObjectsOfType<GameObject>();
-            Debug.Log(allSceneObjects.Length);
-            //_saveDataRepository.Save();
+            var bonuses = Resources.FindObjectsOfTypeAll<Bonus>().ToList();
+            _dataRepository.Save(bonuses);
         }
 
-        private void LoadData()
+        private void LoadBonusesData()
         {
-            //_saveDataRepository.Load
+            var bonuses = Resources.FindObjectsOfTypeAll<Bonus>().ToList();
+            _dataRepository.Load(bonuses);
         }
-        
     }
 }
