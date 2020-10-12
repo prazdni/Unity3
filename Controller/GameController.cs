@@ -12,6 +12,7 @@ namespace MyLabyrinth
         
         private CameraController _cameraController;
         private InputController _inputController;
+        private DataController _dataController;
 
         #endregion
 
@@ -22,7 +23,8 @@ namespace MyLabyrinth
         {
             _executeObjectsAndControllers = new ListExecuteObjectsAndControllers();
             _cameraController = _executeObjectsAndControllers.CameraController;
-            
+            _dataController = new DataController();
+
             // var reference = new Reference();
             //
             //_inputController = _executeObjects.InputController;
@@ -63,9 +65,9 @@ namespace MyLabyrinth
                 {
                     if (!interactive.IsInteractable())
                     {
-                        //interactive.gameObject.SetActive(false);
-                        Destroy(interactive.gameObject);
-                        _executeObjectsAndControllers.RemoveExecuteBonus(i);
+                        interactive.gameObject.SetActive(false);
+                        //Destroy(interactive.gameObject);
+                        //_executeObjectsAndControllers.RemoveExecuteBonus(i);
                         continue;
                     }
                 }

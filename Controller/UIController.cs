@@ -32,8 +32,6 @@ namespace MyLabyrinth
                     case KeyBonus keyBonus:
                         keyBonus.ShowKey += ShowKey;
                         break;
-                    default:
-                        break;
                 }
             }
 
@@ -63,7 +61,7 @@ namespace MyLabyrinth
             var displayWin = Object.FindObjectOfType<DisplayWin>();
             displayWin.ShowWin(o, args);
         }
-
+        
         #endregion
 
 

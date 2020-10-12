@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Linq;
+using UnityEngine;
 
 namespace MyLabyrinth
 {
@@ -7,7 +8,7 @@ namespace MyLabyrinth
         #region Fields
 
         private readonly PlayerBase _playerBase;
-
+        
         #endregion
 
 
