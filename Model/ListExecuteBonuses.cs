@@ -8,17 +8,15 @@ using Random = UnityEngine.Random;
 
 namespace MyLabyrinth
 {
-    public class ListExecuteObjectsAndControllers : IEnumerator, IEnumerable
+    public class ListExecuteBonuses : IEnumerator, IEnumerable
     {
         #region Fields
 
+        private AllExecutableObjects _executableObjects;
         public int Length => _interactiveBonuses.Count;
         
-        private List<IExecute> _interactiveBonuses = new List<IExecute>();
-        
-        private CameraController _cameraController;
-        private InputController _inputController;
-        
+        private List<IExecute> _interactiveBonuses;
+
         private int _index = -1;
         
 
@@ -33,22 +31,20 @@ namespace MyLabyrinth
             private set => _interactiveBonuses[index] = value;
         }
 
-        public CameraController CameraController => _cameraController;
-
-        public InputController InputController => _inputController;
-
         #endregion
 
         
         #region ClassLifeCycles
 
-        public ListExecuteObjectsAndControllers()
+        public ListExecuteBonuses(AllExecutableObjects listExecutableObjects)
         {
+            _executableObjects = listExecutableObjects;
+            
+            _interactiveBonuses = new List<IExecute>();
+            
             SetRandomBonuses();
 
             AddExecuteBonuses();
-
-            AddExecuteControllers();
         }
 
         #endregion
@@ -103,22 +99,8 @@ namespace MyLabyrinth
             _interactiveBonuses.RemoveAt(index);
         }
         
-        private void AddExecuteControllers()
-        {
-            var reference = new Reference();
-            
-            _cameraController = new CameraController(reference.PlayerBall.transform, reference.MainCamera.transform);
-            AddExecuteBonus(_cameraController);
-            AddExecuteBonus(reference.PlayerBall);
-            
-            _inputController = new InputController(reference.PlayerBall);
-            AddExecuteBonus(_inputController);
-            
-            var uiController = new UIController(this);
-        }
-
         #endregion
-
+        
 
         #region IEnumerator
 
@@ -126,7 +108,6 @@ namespace MyLabyrinth
         
         public bool MoveNext()
         {
-
             if (_index == _interactiveBonuses.Count - 1)
             {
                 Reset();

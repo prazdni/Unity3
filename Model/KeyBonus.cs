@@ -9,8 +9,7 @@ namespace MyLabyrinth
     {
         #region Fields
         
-        public event EventHandler<PlayerEventArgs> ShowKey =
-            delegate(object sender, PlayerEventArgs args) {  };
+        public override event EventHandler<PlayerEventArgs> OnInteraction = (sender, args) => { };
 
         private Material _material;
 
@@ -35,10 +34,7 @@ namespace MyLabyrinth
 
         protected override void Interaction(Collider collider)
         {
-            var door = Object.FindObjectOfType<ExitDoor>();
-            door.Open(true);
-
-            ShowKey.Invoke(this, new PlayerEventArgs(_color, BonusValue));
+            OnInteraction.Invoke(this, new PlayerEventArgs(_color, BonusValue, true));
             
             _isInteractable = false;
         }

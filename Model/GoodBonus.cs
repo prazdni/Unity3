@@ -9,8 +9,7 @@ namespace MyLabyrinth
     {
         #region Fields
         
-        public override event EventHandler<PlayerEventArgs> HealedOrDamagedPlayer = 
-            delegate(object sender, PlayerEventArgs args) {  };
+        public override event EventHandler<PlayerEventArgs> OnInteraction = (sender, args) => { };
 
         private Material _material;
 
@@ -35,7 +34,7 @@ namespace MyLabyrinth
 
         protected override void Interaction(Collider collider)
         {
-            HealedOrDamagedPlayer.Invoke(this, new PlayerEventArgs(_color, BonusValue));
+            OnInteraction.Invoke(this, new PlayerEventArgs(_color, BonusValue));
             _isInteractable = false;
         }
         

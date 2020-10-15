@@ -4,16 +4,14 @@ using UnityEngine.UI;
 
 namespace MyLabyrinth
 {
-    public class GameController : MonoBehaviour, IDisposable
+    public class GameController : MonoBehaviour
     {
         #region Fields
-        
-        private ListExecuteObjectsAndControllers _executeObjectsAndControllers;
-        
-        private CameraController _cameraController;
-        private InputController _inputController;
-        private DataController _dataController;
 
+        private AllExecutableObjects _executableObjects;
+
+        private AllBridges _bridges;
+        
         #endregion
 
 
@@ -21,45 +19,16 @@ namespace MyLabyrinth
 
         private void Awake()
         {
-            _executeObjectsAndControllers = new ListExecuteObjectsAndControllers();
-            _cameraController = _executeObjectsAndControllers.CameraController;
-            _dataController = new DataController();
-
-            // var reference = new Reference();
-            //
-            //_inputController = _executeObjects.InputController;
-            // _cameraController = new CameraController(reference.PlayerBall.transform, reference.MainCamera.transform);
-            // _executeObjects.AddExecuteBonus(_cameraController);
-            // _executeObjects.AddExecuteBonus(reference.PlayerBall);
-            //
-            // _inputController = new InputController(reference.PlayerBall);
-            // _executeObjects.AddExecuteBonus(_inputController);
-            //
-            // var uiController = new UIController(_executeObjects);
+            _executableObjects = new AllExecutableObjects();
             
-            for (int i = 0; i < _executeObjectsAndControllers.Length; i++)
-            {
-                var interactiveObject = _executeObjectsAndControllers[i];
-                
-                if (interactiveObject is BadBonus badBonus)
-                {
-                    badBonus.CaughtPlayer +=
-                        _executeObjectsAndControllers.CameraController.CameraShake;
-                }
-
-                if (interactiveObject is SpeedBonus speedBonus)
-                {
-                    speedBonus.ChangeSpeed += 
-                        _executeObjectsAndControllers.CameraController.CameraChangeField;
-                }
-            }
+            _bridges = new AllBridges(_executableObjects);
         }
 
         private void Update()
         {
-            for (int i = 0; i < _executeObjectsAndControllers.Length; i++)
+            for (int i = 0; i < _executableObjects.ExecutableObjectsCount; i++)
             {
-                var interactiveObject = _executeObjectsAndControllers[i];
+                var interactiveObject = _executableObjects[i];
                 
                 if (interactiveObject is InteractiveBonus interactive)
                 {
@@ -76,32 +45,6 @@ namespace MyLabyrinth
             }
         }
         
-        #endregion
-
-
-        #region IDisposable
-
-        public void Dispose()
-        {
-            for (int i = 0; i < _executeObjectsAndControllers.Length; i++)
-            {
-
-                var interactiveObject = _executeObjectsAndControllers[i];
-
-                if (interactiveObject is BadBonus badBonus)
-                {
-                    badBonus.CaughtPlayer -=
-                        _cameraController.CameraShake;;
-                }
-
-                if (interactiveObject is SpeedBonus speedBonus)
-                {
-                    speedBonus.ChangeSpeed -= _cameraController.CameraChangeField;
-                }
-                //удаление в ListExecuteObjects
-            }
-        }
-
         #endregion
     }
 }

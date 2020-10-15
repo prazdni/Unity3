@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace MyLabyrinth
 {
-    public class PhotoController
+    public class PhotoController : BaseController
     {
         private bool _isProcessed;
         private readonly string _path;

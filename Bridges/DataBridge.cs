@@ -4,14 +4,14 @@ using UnityEngine;
 
 namespace MyLabyrinth
 {
-    public class DataController
+    public class DataBridge
     {
         private readonly DataRepository _dataRepository;
 
         private SaveDataButton _savedData;
         private LoadDataButton _loadedData;
         
-        public DataController()
+        public DataBridge()
         {
             _dataRepository = new DataRepository();
             Object.FindObjectOfType<SaveDataButton>().ButtonAction += SaveBonusesData;

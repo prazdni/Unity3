@@ -14,6 +14,8 @@ namespace MyLabyrinth
         protected Color _color;
         private IExecute _executeImplementation;
         private BonusType _typeOfBonus = BonusType.None;
+        
+        public abstract event EventHandler<PlayerEventArgs> OnInteraction;
 
         #endregion
 
