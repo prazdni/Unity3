@@ -4,13 +4,12 @@ using Random = UnityEngine.Random;
 
 namespace MyLabyrinth
 {
-    public sealed class SpeedBonus : InteractiveBonus, IFlick, IRotate, IExecute
+    public sealed class SpeedBonus : InteractiveBonus, IFlick, IRotate
     {
         #region Fields
-
-        public event EventHandler<PlayerEventArgs> ChangeSpeed =
-            delegate(object sender, PlayerEventArgs args) {  };
         
+        public override event EventHandler<PlayerEventArgs> OnInteraction = (sender, args) => { };
+
         private Material _material;
         
         private float _speedRotation;
@@ -34,7 +33,7 @@ namespace MyLabyrinth
 
         protected override void Interaction(Collider collider)
         {
-            ChangeSpeed.Invoke(this, new PlayerEventArgs(_color, 0.0f));
+            OnInteraction.Invoke(this, new PlayerEventArgs(_color, 0.0f));
             collider.gameObject.GetComponent<PlayerBall>().ChangeSpeed(BonusValue);
 
             _isInteractable = false;
@@ -58,7 +57,6 @@ namespace MyLabyrinth
 
         public void Rotate()
         {
-            
             transform.Rotate(Vector3.up * (Time.deltaTime * _speedRotation), Space.World);
         }
 

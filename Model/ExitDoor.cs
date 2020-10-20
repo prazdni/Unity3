@@ -49,9 +49,9 @@ namespace MyLabyrinth
         
         #region IConnectUIRestart
 
-        public void Open(bool isOpened)
+        public void Open(object o, PlayerEventArgs args)
         {
-            _collider.isTrigger = isOpened;
+            _collider.isTrigger = args.IsDoorOpening;
         }
 
         #endregion

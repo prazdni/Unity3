@@ -6,12 +6,8 @@ namespace MyLabyrinth
     public class BadBonus : HealthBonus, IFly, IRotate
     {
         #region Fields
-    
-        public override event EventHandler<PlayerEventArgs> HealedOrDamagedPlayer = 
-            delegate(object sender, PlayerEventArgs args) {  };
-        
-        public event EventHandler<PlayerEventArgs> CaughtPlayer =
-            delegate(object sender, PlayerEventArgs args) {  };
+
+        public override event EventHandler<PlayerEventArgs> OnInteraction = (sender, args) => { };
 
         private float _speedRotation;
         private float _lengthFly;
@@ -35,8 +31,7 @@ namespace MyLabyrinth
 
         protected override void Interaction(Collider collider)
         {
-            CaughtPlayer.Invoke(this, new PlayerEventArgs(_color, BonusValue));
-            HealedOrDamagedPlayer.Invoke(this, new PlayerEventArgs(_color, BonusValue));
+            OnInteraction.Invoke(this, new PlayerEventArgs(_color, BonusValue));
             
             collider.gameObject.GetComponent<Rigidbody>().AddExplosionForce(5.0f, 
                 transform.position, 10.0f, 1.0f, ForceMode.Impulse);

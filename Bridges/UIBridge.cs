@@ -6,31 +6,33 @@ using Object = UnityEngine.Object;
 
 namespace MyLabyrinth
 {
-    public sealed class UIController : IDisposable
+    public sealed class UIBridge : IDisposable
     {
         #region Fields
 
-        private readonly ListExecuteObjectsAndControllers _executeObjectsAndControllers;
+        private readonly AllExecutableObjects _executableObjects;
 
         #endregion
 
+        
         #region ClassLifeCycles
 
-        public UIController(ListExecuteObjectsAndControllers executeObjectsAndControllers)
+        public UIBridge(AllExecutableObjects listExecutableObjects)
         {
-            _executeObjectsAndControllers = executeObjectsAndControllers;
+            _executableObjects = listExecutableObjects;
+            //_executeBonuses = executeBonuses;
 
-            for (int i = 0; i < _executeObjectsAndControllers.Length; i++)
+            for (int i = 0; i < _executableObjects.ExecutableObjectsCount; i++)
             {
-                var interactiveObject = _executeObjectsAndControllers[i];
-                
+                var interactiveObject = _executableObjects[i];
+
                 switch (interactiveObject)
                 {
                     case HealthBonus healthBonus:
-                        healthBonus.HealedOrDamagedPlayer += HealthEffect;
+                        healthBonus.OnInteraction += HealthEffect;
                         break;
                     case KeyBonus keyBonus:
-                        keyBonus.ShowKey += ShowKey;
+                        keyBonus.OnInteraction += ShowKey;
                         break;
                 }
             }
@@ -69,19 +71,17 @@ namespace MyLabyrinth
 
         public void Dispose()
         {
-            for (int i = 0; i < _executeObjectsAndControllers.Length; i++)
+            for (int i = 0; i < _executableObjects.ExecutableObjectsCount; i++)
             {
-                var interactiveObject = _executeObjectsAndControllers[i];
+                var interactiveObject = _executableObjects[i];
                 
                 switch (interactiveObject)
                 {
                     case HealthBonus healthBonus:
-                        healthBonus.HealedOrDamagedPlayer -= HealthEffect;
+                        healthBonus.OnInteraction -= HealthEffect;
                         break;
                     case KeyBonus keyBonus:
-                        keyBonus.ShowKey -= ShowKey;
-                        break;
-                    default:
+                        keyBonus.OnInteraction -= ShowKey;
                         break;
                 }
             }

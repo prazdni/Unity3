@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace MyLabyrinth
 {
-    public sealed class InputController : IExecute 
+    public sealed class InputController : BaseController, IExecute 
     {
         #region Fields
 

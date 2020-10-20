@@ -1,55 +1,52 @@
-﻿using UnityEngine;
-using DG.Tweening;
+﻿using System;
+using UnityEngine;
 
 namespace MyLabyrinth
 {
-    public class CameraController : IExecute
+    public class CameraController : BaseController, IExecute
     {
         #region Fields
         
-        [SerializeField] private float _timer = 1.0f;
-
         private readonly Transform _player;
         private readonly Transform _mainCamera;
         private readonly Vector3 _offset;
-        private readonly Camera _mainCameraCharacteristics;
 
-        private float _field;
-        private bool _isFieldChanged = false;
-        private float _currentTimer;
-        private float _fieldsOffset = 10.0f;
-
+        private CameraShaker _cameraShaker;
+        private FieldChanger _fieldChanger;
+        
         #endregion
 
         #region ClassLifeCycles
 
-        public CameraController(Transform player, Transform mainCamera)
+        public CameraController(Transform player, Camera mainCamera, AllExecutableObjects listExecutableObjects)
         {
-            _currentTimer = 0.0f;
+            var cameraTransform = mainCamera.transform;
+            
+            _cameraShaker = new CameraShaker(cameraTransform);
+            _fieldChanger = new FieldChanger(player, mainCamera, listExecutableObjects);
+            
             _player = player;
-            _mainCamera = mainCamera;
+            _mainCamera = cameraTransform;
             _mainCamera.LookAt(_player);
             _offset = _mainCamera.position - _player.position;
-            _mainCameraCharacteristics = _mainCamera.gameObject.GetComponent<Camera>();
-            _field = _mainCameraCharacteristics.fieldOfView;
         }
 
         #endregion
         
         
         #region Methods
-        
-        public void CameraShake(object o, PlayerEventArgs args)
-        {
-            //_isCameraShaking = true;
-            Tweener tweener = DOTween.Shake(
-                () => _mainCamera.position, pos => _mainCamera.position = pos, 
-                1f, 0.5f, 5, 0.7f);
-        }
 
-        public void CameraChangeField(object o, PlayerEventArgs args)
+        public void OnInteraction(object o, PlayerEventArgs args)
         {
-            _isFieldChanged = true;
+            if (o is BadBonus)
+            {
+                _cameraShaker.ShakeCamera();
+            }
+
+            if (o is SpeedBonus)
+            {
+                _fieldChanger.ChangeField();
+            }
         }
 
         #endregion
@@ -60,26 +57,6 @@ namespace MyLabyrinth
         public void Execute()
         {
             _mainCamera.position = _player.position + _offset;
-
-            if (_isFieldChanged)
-            {
-                _mainCameraCharacteristics.fieldOfView = Mathf.Lerp(_field, _field + _fieldsOffset, _currentTimer * 0.5f);
-                _currentTimer += Time.deltaTime;
-
-                if (_currentTimer > _timer)
-                {
-                    _mainCameraCharacteristics.fieldOfView = Mathf.Lerp(_field, _field + _fieldsOffset, _currentTimer * 0.5f);
-                    _isFieldChanged = false;
-                }
-            }
-            else
-            {
-                if (_mainCameraCharacteristics.fieldOfView != _field)
-                {
-                    _mainCameraCharacteristics.fieldOfView = Mathf.Lerp(_field, _field + _fieldsOffset, _currentTimer * 0.5f);
-                    _currentTimer -= Time.deltaTime;
-                }
-            }
         }
         
         #endregion

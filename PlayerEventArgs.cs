@@ -5,26 +5,24 @@ namespace MyLabyrinth
 {
     public sealed class PlayerEventArgs : EventArgs
     {
-        #region Fields
-
-        public float PlayerHPChange { get; }
-
-        #endregion
-
-
         #region Properties
-
+        
+        public float PlayerHPChange { get; }
+        
         public Color Color { get; }
+
+        public bool IsDoorOpening { get; }
 
         #endregion
 
 
         #region Methods
 
-        public PlayerEventArgs(Color color, float hpChange)
+        public PlayerEventArgs(Color color, float hpChange, bool isDoorOpening = false)
         {
             Color = color;
             PlayerHPChange = hpChange;
+            IsDoorOpening = isDoorOpening;
         }
 
         #endregion

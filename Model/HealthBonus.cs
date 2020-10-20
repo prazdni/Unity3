@@ -5,12 +5,6 @@ namespace MyLabyrinth
 {
     public abstract class HealthBonus : InteractiveBonus
     {
-        #region Fields
-
-        public abstract event EventHandler<PlayerEventArgs> HealedOrDamagedPlayer;
-
-        #endregion
-
 
         #region Methods
 
