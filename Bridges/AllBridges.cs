@@ -1,16 +1,16 @@
 ﻿namespace MyLabyrinth
 {
-    public class AllBridges
+    public sealed class AllBridges
     {
-        private DataBridge _dataBridge;
-        private EventsBridge _eventsBridge;
-        private UIBridge _uiBridge;
+        #region ClassLifeCycles
 
         public AllBridges(AllExecutableObjects listExecutableObjects)
         {
-            _dataBridge = new DataBridge();
-            _uiBridge = new UIBridge(listExecutableObjects);
-            _eventsBridge = new EventsBridge(listExecutableObjects);
+            var uiBridge = new UIBridge(listExecutableObjects);
+            var dataBridge = new DataBridge(listExecutableObjects, uiBridge.HealthBar);
+            var eventsBridge = new EventsBridge(listExecutableObjects);
         }
+
+        #endregion
     }
 }

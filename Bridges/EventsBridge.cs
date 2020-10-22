@@ -2,47 +2,62 @@
 
 namespace MyLabyrinth
 {
-    public class EventsBridge
+    public sealed class EventsBridge
     {
+        #region Fields
+
         private AllExecutableObjects _executableObjects;
-        
+
+        #endregion
+
+
+        #region ClassLifeCycles
+
         public EventsBridge(AllExecutableObjects listExecutableObjects)
         {
             _executableObjects = listExecutableObjects;
             
-            for (int i = 0; i < _executableObjects.ExecutableObjectsCount; i++)
+            for (int i = 0; i < _executableObjects.Count; i++)
             {
                 var interactiveObject = _executableObjects[i];
                 
                 if (interactiveObject is BadBonus || interactiveObject is SpeedBonus)
                 {
-                    (interactiveObject as InteractiveBonus).OnInteraction +=
+                    (interactiveObject as Bonus).OnInteraction +=
                         _executableObjects.CameraController.OnInteraction;
                 }
 
                 if (interactiveObject is KeyBonus keyBonus)
                 {
                     var door = Object.FindObjectOfType<ExitDoor>();
-                    keyBonus.OnInteraction += door.Open;
+                    keyBonus.OnInteraction += door.OpenTheDoor;
                 }
             }
         }
+
+        #endregion
+        
         
         #region IDisposable
 
         public void Dispose()
         {
-            for (int i = 0; i < _executableObjects.ExecutableObjectsCount; i++)
+            for (int i = 0; i < _executableObjects.Count; i++)
             {
 
                 var interactiveObject = _executableObjects[i];
 
                 if (interactiveObject is BadBonus || interactiveObject is SpeedBonus)
                 {
-                    (interactiveObject as InteractiveBonus).OnInteraction -=
+                    (interactiveObject as Bonus).OnInteraction -=
                         _executableObjects.CameraController.OnInteraction;
                 }
-                //удаление в ListExecuteObjects
+                
+                if (interactiveObject is KeyBonus keyBonus)
+                {
+                    var door = Object.FindObjectOfType<ExitDoor>();
+                    keyBonus.OnInteraction -= door.OpenTheDoor;
+                }
             }
         }
 

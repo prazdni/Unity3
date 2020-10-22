@@ -6,12 +6,25 @@ namespace MyLabyrinth
 {
     public class SerializableXMLData<T> : IData<T>
     {
+        #region Fields
+
         private static XmlSerializer _formatter;
+
+        #endregion
+
+
+        #region ClassLifeCycles
 
         public SerializableXMLData()
         {
             _formatter = new XmlSerializer(typeof(T));
         }
+
+        #endregion
+
+
+        #region Methods
+
         public void Save(T data, string path = "")
         {
             if (data == null && !String.IsNullOrEmpty(path))
@@ -47,5 +60,7 @@ namespace MyLabyrinth
             
             return result;
         }
+
+        #endregion
     }
 }

@@ -7,15 +7,24 @@ namespace MyLabyrinth
     [Serializable]
     public sealed class SavedData
     {
+        #region Fields
+
         public string Name;
         public Vector3Serializable Position;
-        public Vector3Serializable Rotation;
+        public QuaternionSerializable Rotation;
         public bool IsEnabled;
+
+        #endregion
+
+
+        #region Methods
 
         public override string ToString()
         {
-            return $"Name = {Name}, Position = {Position}, Rotation = {Rotation}, IsVisible = {IsEnabled}";
+            return $"Name = {Name}, Position = {Position}, Rotation = {Rotation}, IsEnabled = {IsEnabled}";
         }
+
+        #endregion
     }
 }
 

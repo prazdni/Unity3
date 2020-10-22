@@ -1,6 +1,4 @@
-﻿using System;
-using UnityEngine;
-using UnityEngine.UI;
+﻿using UnityEngine;
 
 namespace MyLabyrinth
 {
@@ -8,9 +6,9 @@ namespace MyLabyrinth
     {
         #region Fields
 
-        private AllExecutableObjects _executableObjects;
+        [SerializeField] private BonusesContainer _bonusesContainer;
 
-        private AllBridges _bridges;
+        private AllExecutableObjects _executableObjects;
         
         #endregion
 
@@ -19,22 +17,22 @@ namespace MyLabyrinth
 
         private void Awake()
         {
-            _executableObjects = new AllExecutableObjects();
+            _executableObjects = new AllExecutableObjects(_bonusesContainer);
             
-            _bridges = new AllBridges(_executableObjects);
+            var bridges = new AllBridges(_executableObjects);
         }
 
         private void Update()
         {
-            for (int i = 0; i < _executableObjects.ExecutableObjectsCount; i++)
+            for (int i = 0; i < _executableObjects.Count; i++)
             {
                 var interactiveObject = _executableObjects[i];
                 
-                if (interactiveObject is InteractiveBonus interactive)
+                if (interactiveObject is InteractiveObject interactive)
                 {
                     if (!interactive.IsInteractable())
                     {
-                        interactive.gameObject.SetActive(false);
+                        interactive.ObjectTransform.gameObject.SetActive(false);
                         //Destroy(interactive.gameObject);
                         //_executeObjectsAndControllers.RemoveExecuteBonus(i);
                         continue;

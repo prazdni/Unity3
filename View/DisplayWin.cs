@@ -8,6 +8,7 @@ namespace MyLabyrinth
     {
         #region Fields
 
+        private RestartButton _button;
         private Image _winImage;
 
         #endregion
@@ -18,6 +19,7 @@ namespace MyLabyrinth
         private void Start()
         {
             _winImage = GetComponent<Image>();
+            _button = FindObjectOfType<RestartButton>();
         }
 
         #endregion
@@ -29,6 +31,8 @@ namespace MyLabyrinth
         {
             _winImage.fillAmount = 1.0f;
             Time.timeScale = 0.0f;
+            
+            _button.ActivateButton(true);
         }
 
         #endregion

@@ -4,22 +4,20 @@ using UnityEngine;
 
 namespace MyLabyrinth
 {
-    public class Reference
+    public static class Reference
     {
         #region Fields
 
-        private PlayerBall _playerBall;
-        private Camera _mainCamera;
-        private GameObject _bonuse;
-        private GameObject _endGame;
-        private Canvas _canvas;
-        private List<InteractiveBonus> _bonusCubes;
+        private static PlayerBall _playerBall;
+        private static Camera _mainCamera;
+        private static Transform _bonus;
         
         #endregion
 
+        
         #region Properties
 
-        public PlayerBall PlayerBall
+        public static PlayerBall PlayerBall
         {
             get
             {
@@ -33,7 +31,7 @@ namespace MyLabyrinth
             }
         }
 
-        public Camera MainCamera
+        public static Camera MainCamera
         {
             get
             {
@@ -43,6 +41,19 @@ namespace MyLabyrinth
                 }
 
                 return _mainCamera;
+            }
+        }
+
+        public static Transform Bonus
+        {
+            get
+            {
+                if (_bonus == null)
+                {
+                    _bonus = Resources.Load<Transform>("Bonus");
+                }
+
+                return _bonus;
             }
         }
 

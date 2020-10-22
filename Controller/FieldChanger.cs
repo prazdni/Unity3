@@ -2,53 +2,63 @@
 
 namespace MyLabyrinth
 {
-    public class FieldChanger : IExecute
+    public class FieldChanger
     {
+        #region Fields
+
         private readonly Camera _mainCameraCharacteristics;
-        
-        private Timer _timer;
-        
+        private readonly Timer _timer;
+        private readonly float _field;
         private float _fieldsOffset = 10.0f;
-        private float _field;
         private bool _isFieldChanged = false;
 
-        public FieldChanger(Transform player, Camera mainCamera, AllExecutableObjects listExecutableObjects)
+        #endregion
+
+
+        #region ClassLifeCycles
+
+        public FieldChanger(Camera mainCamera)
         {
-            _timer = new Timer(listExecutableObjects);
+            _timer = new Timer();
 
             _mainCameraCharacteristics = mainCamera;
             _field = _mainCameraCharacteristics.fieldOfView;
-            listExecutableObjects.AddExecutableObject(this);
         }
+
+        #endregion
+
+
+        #region Methods
 
         public void ChangeField()
         {
+            _timer.StartTimeCount();
             _isFieldChanged = true;
         }
+        
+        public bool ShouldChangeField()
+        {
+            return _isFieldChanged;
+        }
 
-        public void Execute()
+        public void ChangeFieldProcessing(float tick)
         {
             if (_isFieldChanged)
             {
-                if (_timer.IsTimerStopped)
+                if (!_timer.IsTimerStopped)
                 {
-                    _timer.StartTimeCount();
+                    _mainCameraCharacteristics.fieldOfView = Mathf.Lerp(_field, _field + _fieldsOffset,
+                        Mathf.PingPong((1 - _timer.CurrentTime) * 2, 1));
+                    
+                    _timer.TimerTick(tick);
                 }
-
-                _mainCameraCharacteristics.fieldOfView = Mathf.Lerp(_field, _field + _fieldsOffset,
-                    Mathf.PingPong((1 - _timer.CurrentTime) * 2, 1));
-
-                if ((1 - _timer.CurrentTime) * 2 > 1)
+                else
                 {
-                    if (Mathf.Abs(_mainCameraCharacteristics.fieldOfView - _field) < 0.1)
-                    {
-                        _timer.StopTimeCount();
-                        _mainCameraCharacteristics.fieldOfView = _field;
-                        _isFieldChanged = false;
-                    }
+                    _isFieldChanged = false;
                 }
-                
             }
         }
+        
+        #endregion
     }
 }

@@ -28,7 +28,12 @@ namespace MyLabyrinth
 
         public void ShowKey(object o, PlayerEventArgs args)
         {
-            _keyImage.fillAmount = 1.0f;
+            _keyImage.fillAmount = 0.0f;
+            
+            if (args.IsDoorOpening)
+            {
+                _keyImage.fillAmount = 1.0f;
+            }
         }
 
         #endregion
