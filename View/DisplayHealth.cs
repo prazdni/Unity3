@@ -12,8 +12,8 @@ namespace MyLabyrinth
         private Text _finishGameLabel;
         private Image _healthBar;
         
-        [SerializeField] private float _playerHP = 10.0f;
         private float _currentPlayerHP = 1.0f;
+        private float _healthData = 1.0f;
         
         #endregion
 
@@ -36,19 +36,29 @@ namespace MyLabyrinth
 
         public void HealOrDamage(object o, PlayerEventArgs args)
         {
-            _currentPlayerHP = Mathf.Clamp(_currentPlayerHP + args.PlayerHPChange / _playerHP, 0.0f, 1.0f);
-
+            if (args.IsLoading)
+            {
+                _currentPlayerHP = _healthData;
+            }
+            else
+            {
+                _currentPlayerHP = Mathf.Clamp(args.PlayerHealth, 0.0f, 1.0f);
+            }
+            
             _healthBar.fillAmount = _currentPlayerHP;
             
             if (_currentPlayerHP <= 0.0f)
             {
-                _finishGameLabel.text = $"You lost! You were killed by {(o as BadBonus).gameObject.name} with {args.Color} color!";
+                _finishGameLabel.text = "You lost!";
                 Time.timeScale = 0.0f;
                 
                 _restartButton.ActivateButton(true);
             }
-            
-            
+        }
+
+        public void RememberHealth()
+        {
+            _healthData = _currentPlayerHP;
         }
 
         #endregion

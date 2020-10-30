@@ -8,9 +8,22 @@ namespace MyLabyrinth
 {
     public sealed class UIBridge : IDisposable
     {
+        
         #region Fields
 
         private readonly AllExecutableObjects _executableObjects;
+        
+        private DisplayHealth _displayHealth;
+        private DisplayKey _displayKey;
+        private DisplayWin _displayWin;
+        private ExitDoor _exitDoor;
+
+        #endregion
+
+
+        #region Properties
+
+        public DisplayHealth HealthBar => _displayHealth;
 
         #endregion
 
@@ -19,51 +32,31 @@ namespace MyLabyrinth
 
         public UIBridge(AllExecutableObjects listExecutableObjects)
         {
+            _displayHealth = Object.FindObjectOfType<DisplayHealth>();
+            _displayKey = Object.FindObjectOfType<DisplayKey>();
+            _displayWin = Object.FindObjectOfType<DisplayWin>();
+            
             _executableObjects = listExecutableObjects;
-            //_executeBonuses = executeBonuses;
 
-            for (int i = 0; i < _executableObjects.ExecutableObjectsCount; i++)
+            for (int i = 0; i < _executableObjects.Count; i++)
             {
                 var interactiveObject = _executableObjects[i];
 
                 switch (interactiveObject)
                 {
                     case HealthBonus healthBonus:
-                        healthBonus.OnInteraction += HealthEffect;
+                        healthBonus.OnInteraction += _displayHealth.HealOrDamage;
                         break;
                     case KeyBonus keyBonus:
-                        keyBonus.OnInteraction += ShowKey;
+                        keyBonus.OnInteraction += _displayKey.ShowKey;
                         break;
                 }
             }
 
-            var connectedObject = Object.FindObjectOfType<ExitDoor>();
-            connectedObject.OnEnter += ShowWin;
+            _exitDoor = Object.FindObjectOfType<ExitDoor>();
+            _exitDoor.OnEnter += _displayWin.ShowWin;
         }
 
-        #endregion
-
-
-        #region Methods
-
-        public void HealthEffect(object o, PlayerEventArgs args)
-        {
-            var displayHealth = Object.FindObjectOfType<DisplayHealth>();
-            displayHealth.HealOrDamage(o, args);
-        }
-
-        public void ShowKey(object o, PlayerEventArgs args)
-        {
-            var displayKey = Object.FindObjectOfType<DisplayKey>();
-            displayKey.ShowKey(o, args);
-        }
-
-        public void ShowWin(object o, PlayerEventArgs args)
-        {
-            var displayWin = Object.FindObjectOfType<DisplayWin>();
-            displayWin.ShowWin(o, args);
-        }
-        
         #endregion
 
 
@@ -71,20 +64,22 @@ namespace MyLabyrinth
 
         public void Dispose()
         {
-            for (int i = 0; i < _executableObjects.ExecutableObjectsCount; i++)
+            for (int i = 0; i < _executableObjects.Count; i++)
             {
                 var interactiveObject = _executableObjects[i];
                 
                 switch (interactiveObject)
                 {
                     case HealthBonus healthBonus:
-                        healthBonus.OnInteraction -= HealthEffect;
+                        healthBonus.OnInteraction -= _displayHealth.HealOrDamage;
                         break;
                     case KeyBonus keyBonus:
-                        keyBonus.OnInteraction -= ShowKey;
+                        keyBonus.OnInteraction -= _displayKey.ShowKey;
                         break;
                 }
             }
+
+            _exitDoor.OnEnter -= _displayWin.ShowWin;
         }
 
         #endregion

@@ -4,24 +4,26 @@ using UnityEngine;
 namespace MyLabyrinth
 {
     [Serializable]
-    public struct Vector3Serializable
+    public struct QuaternionSerializable
     {
         #region Fields
 
         public float X;
         public float Y;
         public float Z;
+        public float W;
 
         #endregion
 
-
+        
         #region ClassLifeCycles
 
-        public Vector3Serializable(float x, float y, float z)
+        public QuaternionSerializable(float x, float y, float z, float w)
         {
             X = x;
             Y = y;
             Z = z;
+            W = w;
         }
 
         #endregion
@@ -31,7 +33,7 @@ namespace MyLabyrinth
 
         public override string ToString()
         {
-            return $"(X = {X}, Y = {Y}, Z = {Z})";
+            return $"(X = {X}, Y = {Y}, Z = {Z}, W = {W})";
         }
 
         #endregion
@@ -39,17 +41,16 @@ namespace MyLabyrinth
 
         #region Operators
 
-        public static implicit operator Vector3(Vector3Serializable value)
+        public static implicit operator Quaternion(QuaternionSerializable value)
         {
-            return new Vector3(value.X, value.Y, value.Z);
+            return new Quaternion(value.X, value.Y, value.Z, value.W);
         }
         
-        public static implicit operator Vector3Serializable(Vector3 value)
+        public static implicit operator QuaternionSerializable(Quaternion value)
         {
-            return new Vector3Serializable(value.x, value.y, value.z);
+            return new QuaternionSerializable(value.x, value.y, value.z, value.z);
         }
 
         #endregion
     }
 }
-

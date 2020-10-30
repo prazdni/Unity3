@@ -4,14 +4,16 @@ using UnityEngine;
 
 namespace MyLabyrinth
 {
-    [CustomEditor(typeof(Bonus))]
+    [CustomEditor(typeof(BonusCharacteristics))]
     public class BonusEditor : Editor
     {
+        #region Methods
+
         public override void OnInspectorGUI()
         {
             base.OnInspectorGUI();
             
-            Transform bonusTransformParent = (target as Bonus).transform.parent;
+            Transform bonusTransformParent = (target as BonusCharacteristics).transform;
 
             EditorGUILayout.LabelField("Bonus scale");
             
@@ -20,5 +22,7 @@ namespace MyLabyrinth
 
             bonusTransformParent.localScale = new Vector3(scale, scale, scale);
         }
+
+        #endregion
     }
 }

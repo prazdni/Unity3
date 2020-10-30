@@ -1,50 +1,49 @@
-﻿using System.Collections.Generic;
-
-namespace MyLabyrinth
+﻿namespace MyLabyrinth
 {
     public class ListExecuteControllers
     {
+        #region Fields
+        
         private AllExecutableObjects _executableObjects;
         
-        private List<IExecute> _executableControllers;
-        
         private CameraController _cameraController;
-        private InputController _inputController;
-        
-        public IExecute this [int index]
-        {
-            get => _executableControllers[index];
-            private set => _executableControllers[index] = value;
-        }
-        
-        public int Length => _executableControllers.Count;
-        
+
+        #endregion
+
+
+        #region Properties
+
         public CameraController CameraController => _cameraController;
 
-        public InputController InputController => _inputController;
+        #endregion
 
-        public ListExecuteControllers(AllExecutableObjects listExecutableObjects)
+
+        #region ClassLifeCycles
+
+        public ListExecuteControllers(AllExecutableObjects listExecutableObjects, BonusesContainer container)
         {
             _executableObjects = listExecutableObjects;
-            _executableControllers = new List<IExecute>();
-            AddExecuteControllers();
-        }
-        
-        public void AddExecuteControllers()
-        {
-            var reference = new Reference();
             
-            _cameraController = new CameraController(reference.PlayerBall.transform, reference.MainCamera, _executableObjects);
+            var bonusCreator = new BonusCreator(listExecutableObjects, container);
+            
+            _cameraController = new CameraController(Reference.PlayerBall.transform, Reference.MainCamera);
             AddExecutableController(_cameraController);
-            AddExecutableController(reference.PlayerBall);
+            AddExecutableController(Reference.PlayerBall);
             
-            _inputController = new InputController(reference.PlayerBall);
-            AddExecutableController(_inputController);
+            var inputController = new InputController(Reference.PlayerBall);
+            AddExecutableController(inputController);
         }
+
+        #endregion
+
+
+        #region Methods
 
         private void AddExecutableController(IExecute execute)
         {
-            _executableControllers.Add(execute);
+            _executableObjects.AddExecutableObject(execute);
         }
+
+        #endregion
     }
 }

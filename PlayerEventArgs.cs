@@ -7,22 +7,22 @@ namespace MyLabyrinth
     {
         #region Properties
         
-        public float PlayerHPChange { get; }
-        
-        public Color Color { get; }
+        public float PlayerHealth { get; }
 
         public bool IsDoorOpening { get; }
+        
+        public bool IsLoading { get; }
 
         #endregion
 
 
         #region Methods
 
-        public PlayerEventArgs(Color color, float hpChange, bool isDoorOpening = false)
+        public PlayerEventArgs(float health, bool isLoading, bool isDoorOpening = false)
         {
-            Color = color;
-            PlayerHPChange = hpChange;
+            PlayerHealth = health;
             IsDoorOpening = isDoorOpening;
+            IsLoading = isLoading;
         }
 
         #endregion

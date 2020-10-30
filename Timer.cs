@@ -3,12 +3,12 @@ using UnityEngine;
 
 namespace MyLabyrinth
 {
-    public class Timer : IExecute
+    public class Timer
     {
         private float _timerMaxValue;
         private float _timerMinValue;
         private float _currentTime;
-        
+
         private AllExecutableObjects _executableObjects;
         
         public float CurrentTime
@@ -23,25 +23,24 @@ namespace MyLabyrinth
 
         private bool _isTimeStarted = false;
 
-        public Timer(AllExecutableObjects listOfAllExecutableObjects, float timerMinValue = 0, float timerMaxValue = 1)
+        public Timer(float timerMinValue = 0, float timerMaxValue = 1)
         {
             _timerMaxValue = timerMaxValue;
             _timerMinValue = timerMinValue;
 
             _currentTime = _timerMaxValue;
-            
-            listOfAllExecutableObjects.AddExecutableObject(this);
         }
 
+        public void TimerTick(float tick)
+        {
+            _currentTime -= tick;
+            TickAction();
+        }
+        
         public void StartTimeCount()
         {
-            _isTimeStarted = true;
-        }
-
-        public void RestartTimeCount()
-        {
             _currentTime = _timerMaxValue;
-            StartTimeCount();
+            _isTimeStarted = true;
         }
 
         public void StopTimeCount()
@@ -54,15 +53,14 @@ namespace MyLabyrinth
             _currentTime = _timerMaxValue;
         }
 
-        public void Execute()
+        private void TickAction()
         {
             if (_isTimeStarted)
             {
-                _currentTime -= Time.deltaTime;
-                
-                if (_currentTime < _timerMinValue)
+                if (_currentTime <= _timerMinValue)
                 {
                     _currentTime = _timerMinValue;
+                    _isTimeStarted = false;
                 }
             }
         }

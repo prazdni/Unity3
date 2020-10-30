@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace MyLabyrinth
 {
-    public class CameraController : BaseController, IExecute
+    public class CameraController : IExecute
     {
         #region Fields
         
@@ -16,14 +16,15 @@ namespace MyLabyrinth
         
         #endregion
 
+        
         #region ClassLifeCycles
 
-        public CameraController(Transform player, Camera mainCamera, AllExecutableObjects listExecutableObjects)
+        public CameraController(Transform player, Camera mainCamera)
         {
             var cameraTransform = mainCamera.transform;
             
             _cameraShaker = new CameraShaker(cameraTransform);
-            _fieldChanger = new FieldChanger(player, mainCamera, listExecutableObjects);
+            _fieldChanger = new FieldChanger(mainCamera);
             
             _player = player;
             _mainCamera = cameraTransform;
@@ -38,12 +39,12 @@ namespace MyLabyrinth
 
         public void OnInteraction(object o, PlayerEventArgs args)
         {
-            if (o is BadBonus)
+            if (o is BadBonus && !args.IsLoading)
             {
                 _cameraShaker.ShakeCamera();
             }
 
-            if (o is SpeedBonus)
+            if (o is SpeedBonus && !args.IsLoading)
             {
                 _fieldChanger.ChangeField();
             }
@@ -57,6 +58,11 @@ namespace MyLabyrinth
         public void Execute()
         {
             _mainCamera.position = _player.position + _offset;
+
+            if (_fieldChanger.ShouldChangeField())
+            {
+                _fieldChanger.ChangeFieldProcessing(Time.deltaTime);
+            }
         }
         
         #endregion

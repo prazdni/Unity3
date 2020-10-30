@@ -6,84 +6,81 @@ namespace MyLabyrinth
 {
     public sealed class DataRepository
     {
-        private readonly IData<SavedData> _data;
-        private readonly IData<SavedData[]> _bonusesData;
+        #region Fields
+
+        private readonly IData<SavedData[]> _sceneObjectsData;
+        
         private const string _folderName = "dataSave";
         private const string _fileName = "BonusesData.bat";
+        
         private readonly string _path;
+
+        #endregion
+
+
+        #region ClassLifeCycles
 
         public DataRepository()
         {
-            _bonusesData = new SerializableXMLData<SavedData[]>();
-            _data = new XMLData();
+            _sceneObjectsData = new SerializableXMLData<SavedData[]>();
             _path = Path.Combine(Application.dataPath, _folderName);
         }
 
-        public void Save(GameObject player)
+        #endregion
+
+
+        #region Methods
+
+        public void Save(List<IInteractable> interactableObjects)
         {
+            SavedData[] objectsData = new SavedData[interactableObjects.Count];
+            
+            for (int i = 0; i < objectsData.Length; i++)
+            {
+                objectsData[i] = InteractableToData(interactableObjects[i]);
+            }
+
             if (!Directory.Exists(_path))
                 Directory.CreateDirectory(_path);
+            
+            _sceneObjectsData.Save(objectsData, Path.Combine(_path, _fileName));
+        }
 
-            var transform = player.transform;
-            SavedData savedPlayer = new SavedData
+        public void Load(List<IInteractable> interactableObjects)
+        {
+            var file = Path.Combine(_path, _fileName);
+
+            if (!File.Exists(file))
+                return;
+
+            var newSceneObjectsData = _sceneObjectsData.Load(file);
+
+            for (int i = 0; i < newSceneObjectsData.Length; i++)
             {
-                Name = player.name,
-                Position = transform.position,
-                Rotation = transform.rotation.eulerAngles,
-                IsEnabled = true
+                DataToInteractable(interactableObjects[i], newSceneObjectsData[i]);
+            }
+        }
+
+        private SavedData InteractableToData(IInteractable interactableObject)
+        {
+            var data = new SavedData
+            {
+                Name = interactableObject.ObjectTransform.name, Position = interactableObject.ObjectTransform.position,
+                Rotation = interactableObject.ObjectTransform.rotation,
+                IsEnabled = interactableObject.IsInteractable()
             };
-            
-            _data.Save(savedPlayer, Path.Combine(_path, _fileName));
-        }
-        
-        public void Save(List<Bonus> bonuses)
-        {
-            SavedData[] bonusesData = new SavedData[bonuses.Count];
-            for (int i = 0; i < bonusesData.Length; i++)
-            {
-                bonusesData[i] = new SavedData
-                {
-                    Name = bonuses[i].name, Position = bonuses[i].transform.position,
-                    Rotation = bonuses[i].transform.rotation.eulerAngles, IsEnabled = bonuses[i].isActiveAndEnabled
-                };
-            }
-            
-            if (!Directory.Exists(_path))
-                Directory.CreateDirectory(_path);
-            _bonusesData.Save(bonusesData, Path.Combine(_path, _fileName));
+
+            return data;
         }
 
-        public void Load(GameObject player)
+        private void DataToInteractable(IInteractable interactableObject, SavedData data)
         {
-            var file = Path.Combine(_path, _fileName);
-            if (!File.Exists(file))
-                return;
+            interactableObject.ObjectTransform.name = data.Name;
+            interactableObject.ObjectTransform.position = data.Position;
+            interactableObject.ObjectTransform.rotation = data.Rotation;
+            interactableObject.SetInteractable(data.IsEnabled);
+        }
 
-            var newPlayer = _data.Load(file);
-            player.transform.position = newPlayer.Position;
-            player.name = newPlayer.Name;
-            player.transform.Rotate(newPlayer.Rotation.X, newPlayer.Rotation.Y, newPlayer.Rotation.Z);
-            player.gameObject.SetActive(newPlayer.IsEnabled);
-        }
-        
-        public void Load(List<Bonus> bonuses)
-        {
-            var file = Path.Combine(_path, _fileName);
-            
-            if (!File.Exists(file))
-                return;
-            
-            var newBonusesData = _bonusesData.Load(file);
-            
-            for (int i = 0; i < newBonusesData.Length; i++)
-            {
-                bonuses[i].name = newBonusesData[i].Name;
-                bonuses[i].transform.position = newBonusesData[i].Position;
-                bonuses[i].transform.Rotate(newBonusesData[i].Rotation.X, newBonusesData[i].Rotation.Y,
-                    newBonusesData[i].Rotation.Z);
-                bonuses[i].gameObject.SetActive(newBonusesData[i].IsEnabled);
-            }
-        }
-    } 
+        #endregion
+    }
 }
-

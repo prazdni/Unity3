@@ -1,34 +1,59 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 namespace MyLabyrinth
 {
-    public class DataBridge
+    public sealed class DataBridge
     {
+        #region Fields
+        
+        private List<IInteractable> _listInteractableObjects;
+        private AllInteractableObjects _allInteractableObjects;
+        
         private readonly DataRepository _dataRepository;
-
+        
         private SaveDataButton _savedData;
         private LoadDataButton _loadedData;
-        
-        public DataBridge()
+
+        #endregion
+
+
+        #region ClassLifeCycles
+
+        public DataBridge(AllExecutableObjects executableObjects, DisplayHealth healthBar)
         {
+            _savedData = Object.FindObjectOfType<SaveDataButton>();
+            _loadedData = Object.FindObjectOfType<LoadDataButton>();
+            
             _dataRepository = new DataRepository();
-            Object.FindObjectOfType<SaveDataButton>().ButtonAction += SaveBonusesData;
-            Object.FindObjectOfType<LoadDataButton>().ButtonAction += LoadBonusesData;
+
+            _allInteractableObjects = new AllInteractableObjects(executableObjects);
+
+            _listInteractableObjects = _allInteractableObjects.InteractableObjects;
+
+            _savedData.ButtonAction += SaveBonusesData;
+            _savedData.ButtonAction += healthBar.RememberHealth;
+            _savedData.ButtonAction += _loadedData.SetButtonActive;
+            
+            _loadedData.ButtonAction += LoadBonusesData;
 
         }
 
+        #endregion
+
+
+        #region Methods
+
         private void SaveBonusesData()
-        {
-            var bonuses = Resources.FindObjectsOfTypeAll<Bonus>().ToList();
-            _dataRepository.Save(bonuses);
+        { 
+            _dataRepository.Save(_listInteractableObjects);
         }
 
         private void LoadBonusesData()
         {
-            var bonuses = Resources.FindObjectsOfTypeAll<Bonus>().ToList();
-            _dataRepository.Load(bonuses);
+            _dataRepository.Load(_listInteractableObjects);
         }
+
+        #endregion
     }
 }
